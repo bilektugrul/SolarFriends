@@ -1,0 +1,102 @@
+prefix: '&2» &3Friends'
+prefix-2: '&3Friends &2»'
+
+broadcast-cooldown: 10 # in seconds
+list-cooldown: 10 # in seconds
+friend-limit: 10
+general-mail-limit: 5 # amount of mail senders that a player can have in their mailbox
+per-player-mail-limit: 3 # amount of mails that a player can send to another player
+
+messages:
+  no-permission:
+    - '%prefix-2% &cI''m sorry, you don''t have required permission for this command.'
+  reloaded:
+    - '%prefix-2% &6Config reloaded.'
+  console:
+    - '&cYou can only reload the plugin from console.'
+  msg-format:
+    sender:
+      - '&f[You] &6-> &f[%user%&r]: &b%message%'
+    receiver:
+      - '&f[%user%&r] &6-> &f[You]: &b%message%'
+    broadcast:
+      - '&f%user%&r''s &6broadcast for their friends: &b%message%'
+    mail-sent:
+      - '&eYour new mail to &f%user%:'
+      - ' &b%message%'
+    mail-received:
+      - '&eYour mails from &f%user%:'
+      - '&b%messages%'
+
+  friend-join:
+    - '%prefix-2% &eYour friend &f%player% &eis now online.'
+  friend-leave:
+    - '%prefix-2% &eYour friend &f%player% &eis now offline.'
+
+  help-command:
+    - '%prefix%'
+    - '     &f/fr add <player>&r &8&l-> &eSends a friend request to given player.'
+    - '     &f/fr accept <player>&r &8&l-> &eAccepts incoming friend request from given player.'
+    - '     &f/fr deny <player>&r &8&l-> &eDenies incoming friend request from given player.'
+    - '     &f/fr remove <player>&r &8&l-> &eRemoves given player from your friend list.'
+    - '     &f/fr list&r &8&l-> &eSends a list of friends and friend requests.'
+    - '     &f/fr msg <player> [<message>]&r &8&l-> &eSends the message to your friend.'
+    - '     &f/fr mail <player> [<message>]&r &8&l-> &eSends a mail to your friend, they''ll get it once they get online again.'
+    - '     &f/fr bc <message> &8&l-> &eBroadcasts the message to all of your friends.'
+    - '     &f/fr block <player> &8&l-> &eBlocks given player.'
+    - '%prefix%'
+
+  type-player:
+    - '&cPlease type a player name.'
+  type-message:
+    - '&cPlease type a message.'
+  not-active:
+    - '&cThat player is not active.'
+
+  sent-request:
+    - '&eYou have sent &f%user% &ea friend request. They have a minute to accept it.'
+  new-request:
+    - '&f%user% &ehas sent you a friend request.'
+    - '&eType &f/friend accept %user% &eto accept it.'
+    - '&eThe request will not be valid after a minute.'
+  already-sent:
+    - '&cYou have already sent a friend request to &f%user%&c.'
+  have-request-from:
+    - '&eYou already have a friend request from &f%user%&e, adding them as a friend.'
+  already-friends:
+    - '&cYou are already friends with &f%user%&c.'
+  max-friends:
+    - '&cYou have &f%amount% &cof friends, which is the maximum amount.'
+    - '&cPlease remove someone before adding a new player as a friend.'
+
+  no-request:
+    - '&f%user% &cdid not send you a friend request or the request is not valid anymore.'
+  accepted:
+    - '&eYou have accepted &f%user%''s &efriend request.'
+  accepted-2:
+    - '&f%user% &ehave accepted your friend request.'
+
+  denied:
+    - '&eYou have denied &f%user%''s &efriend request.'
+  denied-2:
+    - '&f%user% &ehave denied your friend request.'
+
+  not-friends-with:
+    - '&cYou are not friends with &f%user%&c.'
+  removed:
+    - '&eYou have removed &f%user% &efrom your friend list.'
+
+  cooldown:
+    - '&cWait a little bit before doing that again.'
+  mail-amount:
+    - '&cYou have sent the maximum amount of mails that you can send at one time to this player.'
+  general-mail-amount:
+    - '&cThis player already has the maximum amount of mails that they can receive.'
+
+  list:
+    header:
+      - '%prefix-2% &6Your Friends:'
+    format:
+      - ' &e• &f%name% &e- %online%'
+    online: '&aOnline'
+    offline: '&cOffline'

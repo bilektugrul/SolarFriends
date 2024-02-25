@@ -1,0 +1,4 @@
+name: SolarFriendsBungee
+version: '${project.version}'
+main: io.github.bilektugrul.solarfriendsbungee.SolarFriends
+author: bilektugrul
