@@ -50,7 +50,11 @@ public final class SolarFriends extends Plugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        try {
+            userManager.saveUsers();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void makeConfig() throws IOException {

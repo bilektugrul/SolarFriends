@@ -43,7 +43,7 @@ messages:
     - '     &f/fr msg <player> [<message>]&r &8&l-> &eSends the message to your friend.'
     - '     &f/fr mail <player> [<message>]&r &8&l-> &eSends a mail to your friend, they''ll get it once they get online again.'
     - '     &f/fr bc <message> &8&l-> &eBroadcasts the message to all of your friends.'
-    - '     &f/fr block <player> &8&l-> &eBlocks given player.'
+    - '     &f/fr block <player> &8&l-> &eBlocks/unblocks given player.'
     - '%prefix%'
 
   type-player:
@@ -85,6 +85,15 @@ messages:
     - '&cYou are not friends with &f%user%&c.'
   removed:
     - '&eYou have removed &f%user% &efrom your friend list.'
+
+  blocked:
+    - '&eYou have blocked &f%user%&e.'
+  unblocked:
+    - '&eYou have unblocked &f%user%&e.'
+  blocked-by:
+    - '&f%user% &chas blocked you, therefore you can not add them as a friend.'
+  you-blocked:
+    - '&cYou have blocked &f%user%&c, therefore you can not add them as a friend.'
 
   cooldown:
     - '&cWait a little bit before doing that again.'

@@ -83,6 +83,10 @@ public class Utils {
         return String.join(" ", list);
     }
 
+    public static String listToStringComma(List<String> list) {
+        return String.join(", ", list);
+    }
+
     public static String fileToString(File file) throws IOException {
         BufferedReader br;
         try {

@@ -23,7 +23,7 @@ public final class FriendCommand extends Command {
     private final UserManager userManager;
 
     public FriendCommand(SolarFriends plugin) {
-        super("friend", null, "f", "friends");
+        super("friend", null, "f", "fr", "friends");
         this.plugin = plugin;
         this.server = plugin.getServer();
         this.userManager = plugin.getUserManager();
@@ -149,6 +149,15 @@ public final class FriendCommand extends Command {
 
             broadcastCommand(sender, Utils.listToStringNoNl(Arrays.asList(args).subList(1, args.length)));
         }
+
+        if (args[0].equalsIgnoreCase("block")) {
+            if (args.length == 1) {
+                Utils.sendMessage("type-player", source);
+                return;
+            }
+
+            blockCommand(sender, args[1]);
+        }
     }
 
     private void addCommand(ProxiedPlayer source, ProxiedPlayer toAdd) {
@@ -186,6 +195,18 @@ public final class FriendCommand extends Command {
 
         if (toAddUser.hasRequestFrom(sourceUser)) {
             source.sendMessage(Utils.getMessage("already-sent", source)
+                    .replace("%user%", toAdd.getName()));
+            return;
+        }
+
+        if (toAddUser.isBlocked(source.getName())) {
+            source.sendMessage(Utils.getMessage("blocked-by", source)
+                    .replace("%user%", toAdd.getName()));
+            return;
+        }
+
+        if (sourceUser.isBlocked(toAdd.getName())) {
+            source.sendMessage(Utils.getMessage("you-blocked", source)
                     .replace("%user%", toAdd.getName()));
             return;
         }
@@ -279,19 +300,27 @@ public final class FriendCommand extends Command {
     private Set<ProxiedPlayer> cooldown = new HashSet<>();
 
     private void listCommand(ProxiedPlayer source) {
-     if (cooldown.contains(source)) {
+        if (cooldown.contains(source)) {
             source.sendMessage(Utils.getMessage("cooldown", source));
             return;
         }
 
         User sourceUser = userManager.getUser(source);
+        List<String> allFriends = new ArrayList<>(sourceUser.getFriends());
+        List<ProxiedPlayer> onlineFriends = new ArrayList<>(sourceUser.getOnlineFriends());
+
         source.sendMessage(Utils.getMessage("list.header", source));
-        sourceUser.getFriends().forEach(f -> source.sendMessage(Utils.getMessage("list.format", source)
+
+        onlineFriends.forEach(of -> {
+            allFriends.remove(of.getName());
+            source.sendMessage(Utils.getMessage("list.format", source)
+                    .replace("%name%", of.getName())
+                    .replace("%online%", Utils.getColoredString("messages.list.online")));
+        });
+
+        allFriends.forEach(f -> source.sendMessage(Utils.getMessage("list.format", source)
                 .replace("%name%", f)
-                .replace("%online%", server.getPlayer(f) == null
-                        ? Utils.getColoredString("messages.list.offline")
-                        : Utils.getColoredString("messages.list.online")))
-        );
+                .replace("%online%", Utils.getColoredString("messages.list.offline"))));
 
         cooldown.add(source);
         HCore.asyncScheduler()
@@ -368,16 +397,41 @@ public final class FriendCommand extends Command {
                 .replace("%message%", message);
 
         source.sendMessage(broadcast);
-        List<ProxiedPlayer> onlineFriends = sourceUser.getOnlineFriends();
-        onlineFriends.forEach(f -> f.sendMessage(broadcast));
+        sourceUser.getOnlineFriends().forEach(of -> of.sendMessage(broadcast));
+
         cooldown.add(source);
         HCore.asyncScheduler()
                 .after(Utils.getInt("broadcast-cooldown"), TimeUnit.SECONDS)
                 .run(() -> cooldown.remove(source));
     }
 
-    private void blockCommand(ProxiedPlayer source) {
+    private void blockCommand(ProxiedPlayer source, String toBlock) {
+        User sourceUser = userManager.getUser(source);
+        User toBlockUser = userManager.getUser(toBlock);
+        if (sourceUser == null) return;
+        if (toBlockUser == null) {
+            sourceUser.sendMessage("not-active");
+            return;
+        }
 
+        if (sourceUser.isBlocked(toBlock)) {
+            sourceUser.unblock(toBlock);
+            source.sendMessage(Utils.getMessage("unblocked", source)
+                    .replace("%user%", toBlockUser.getName()));
+            return;
+        }
+
+        if (!sourceUser.isFriendWith(toBlockUser)) {
+            source.sendMessage(Utils.getMessage("not-friends-with", source)
+                    .replace("%user%", toBlockUser.getName()));
+            return;
+        }
+
+        sourceUser.removeFriend(toBlockUser);
+        sourceUser.block(toBlock);
+        toBlockUser.removeFriend(sourceUser);
+        source.sendMessage(Utils.getMessage("blocked", source)
+                .replace("%user%", toBlockUser.getName()));
     }
 
 }

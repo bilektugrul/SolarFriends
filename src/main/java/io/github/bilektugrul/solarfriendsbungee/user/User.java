@@ -78,6 +78,18 @@ public class User {
         friendRequests.remove(other.getName());
     }
 
+    public void block(String name) {
+        blocked.add(name);
+    }
+
+    public boolean isBlocked(String name) {
+        return blocked.contains(name);
+    }
+
+    public void unblock(String name) {
+        blocked.remove(name);
+    }
+
     public Map<String, List<String>> getMails() {
         return mails;
     }
